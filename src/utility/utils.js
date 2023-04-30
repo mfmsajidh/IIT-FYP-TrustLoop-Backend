@@ -1,7 +1,12 @@
-import * as jwt from 'jsonwebtoken';
 import { ENVIRONMENT } from '../config/configuration.js';
+import jsonwebtoken from 'jsonwebtoken';
+
+const { sign } = jsonwebtoken;
+
 export const getToken = (email) => {
-  return jwt.sign({ id: email }, ENVIRONMENT.jwtKey, { expiresIn: '2d' });
+  return sign({ id: email}, ENVIRONMENT.jwtKey, {
+    expiresIn: '2d',
+  });
 };
 
 export const generateResponse = (res, statusCode, isError, message, data) => {
