@@ -1,0 +1,50 @@
+import User from '../schemas/auth.schema.js';
+import { getToken } from '../../utility/utils.js';
+
+export const loginService = async (req) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      throw new Error('Something wrong with your email and password');
+    }
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      throw new Error('User does not exisit');
+    }
+
+    if (password !== user.password) {
+      throw new Error('Something wrong with your email and password');
+    }
+
+    const token = getToken(email);
+    await User.findByIdAndUpdate(user._id, { token }, { new: true });
+    return { token, email };
+  } catch (error) {
+    throw new Error('User login failed');
+  }
+};
+
+export const registerService = async (req) => {
+  try {
+    const { email, password, name } = req.body;
+
+    if (!email || !password || !name) {
+      throw new Error('Invalid fields');
+    }
+
+    const user = await User.findOne({ email });
+    if (user) {
+      throw new Error('User Exisits');
+    }
+
+    await User.create({
+      email,
+      password,
+      name,
+    });
+  } catch (error) {
+    throw new Error('User creation failed');
+  }
+};
