@@ -11,6 +11,7 @@
   "author": "Sajidh Farook",
   "license": "ISC",
   "dependencies": {
+    "@pinata/sdk": "^2.1.0",
     "bcrypt": "^5.1.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
