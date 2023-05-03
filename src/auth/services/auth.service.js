@@ -11,14 +11,14 @@ export const loginService = async (req) => {
 
     const user = await User.findOne({ email });
     if (!user) {
-      throw new Error('User does not exisit');
+      throw new Error('User does not exist');
     }
 
     if (password !== user.password) {
       throw new Error('Something wrong with your email and password');
     }
 
-    const token = getToken(email);
+    const token =  getToken(email);
     await User.findByIdAndUpdate(user._id, { token }, { new: true });
     return { token, email };
   } catch (error) {
@@ -36,7 +36,7 @@ export const registerService = async (req) => {
 
     const user = await User.findOne({ email });
     if (user) {
-      throw new Error('User Exisits');
+      throw new Error('User Exist');
     }
 
     await User.create({
