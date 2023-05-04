@@ -44,3 +44,11 @@ export const addPostService = async (req) => {
     throw new Error('Post creation failed');
   }
 };
+
+export const getAllPostsService = async () => {
+  try {
+    return await Post.find();
+  } catch (error) {
+    throw new Error('Get all posts failed');
+  }
+};
