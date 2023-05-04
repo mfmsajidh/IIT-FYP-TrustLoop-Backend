@@ -7,8 +7,15 @@ import path from 'node:path';
 
 export const addPostService = async (req) => {
   try {
-    const { condition, category, postTitle, serialNumber, price, value } =
-      req.body;
+    const {
+      condition,
+      category,
+      postTitle,
+      serialNumber,
+      price,
+      value,
+      userId,
+    } = req.body;
 
     const image = {
       data: fs.readFileSync(req.file.path),
@@ -21,7 +28,8 @@ export const addPostService = async (req) => {
       !postTitle ||
       !serialNumber ||
       !price ||
-      !value
+      !value ||
+      !userId
     ) {
       throw new Error('Invalid fields');
     }
@@ -39,6 +47,7 @@ export const addPostService = async (req) => {
       serialNumber,
       price,
       value,
+      userId,
     });
   } catch (error) {
     throw new Error('Post creation failed');
