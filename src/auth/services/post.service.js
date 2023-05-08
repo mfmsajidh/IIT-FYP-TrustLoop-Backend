@@ -151,7 +151,9 @@ export const addPostService = async (req) => {
 
 export const getAllPostsService = async () => {
   try {
-    return await Post.find({ traded: false });
+    const posts = await Post.find({ traded: false });
+    if (posts) return posts;
+    return [];
   } catch (error) {
     throw new Error('Get all posts failed');
   }
