@@ -170,8 +170,6 @@ export const ipfsDetailsPostService = async (req) => {
   try {
     const { ipfsHash } = req.body;
 
-    console.log(ipfsHash);
-
     return await axios
       .get(`https://gateway.pinata.cloud/ipfs/${ipfsHash}`, {
         headers: {
