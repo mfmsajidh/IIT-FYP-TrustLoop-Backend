@@ -1,5 +1,6 @@
 import User from '../schemas/auth.schema.js';
 import { getToken } from '../../utility/utils.js';
+import { createUserStellarAccount } from '../../utility/stellar.util.js';
 
 export const loginService = async (req) => {
   try {
@@ -28,7 +29,7 @@ export const loginService = async (req) => {
 
 export const registerService = async (req) => {
   try {
-    const { email, password, name, publicKey, secret } = req.body;
+    const { email, password, name } = req.body;
 
     if (!email || !password || !name) {
       throw new Error('Invalid fields');
@@ -39,12 +40,14 @@ export const registerService = async (req) => {
       throw new Error('User Exist');
     }
 
+    const userStellarAccount = await createUserStellarAccount();
+
     await User.create({
       email,
       password,
       name,
-      publicKey,
-      secret,
+      publicKey: userStellarAccount.publicKey(),
+      secret: userStellarAccount.secret(),
     });
   } catch (error) {
     throw new Error('User creation failed');
