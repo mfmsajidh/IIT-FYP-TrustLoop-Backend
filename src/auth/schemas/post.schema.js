@@ -5,14 +5,24 @@ const postSchema = new Schema({
   condition: { type: String, required: true },
   category: { type: String, required: true },
   postTitle: { type: String, required: true },
-  serialNumber: { type: String, required: false },
-  price: { type: String, required: false },
-  value: { type: String, required: false },
+  serialNumber: { type: String, required: false, unique: true },
+  price: { type: String, required: true },
+  value: { type: String, required: true },
   userId: {
     type: SchemaTypes.ObjectId,
     ref: 'User',
-    required: true,
   },
+  transactionHistory: [
+    {
+      stellarUserPublicKey: String,
+      previousStellarTransactionId: String,
+      stellarTransactionId: String,
+      ipfsHash: String,
+      timestamp: Date,
+      transactionType: String,
+    },
+  ],
+  traded: { type: Boolean, default: false },
 });
 
 const Post = model('Post', postSchema);
