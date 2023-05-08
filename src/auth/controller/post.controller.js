@@ -3,6 +3,7 @@ import { generateResponse } from '../../utility/utils.js';
 import {
   addPostService,
   getAllPostsService,
+  purchasePostService,
 } from '../services/post.service.js';
 
 export const addPostController = async (req, res) => {
@@ -18,6 +19,15 @@ export const getAllPostsController = async (req, res) => {
   try {
     const response = await getAllPostsService();
     return generateResponse(res, 200, false, 'Get all posts success', response);
+  } catch (error) {
+    return generateResponse(res, 500, true, error.message);
+  }
+};
+
+export const purchasePostController = async (req, res) => {
+  try {
+    const response = await purchasePostService(req);
+    return generateResponse(res, 200, false, 'Purchase post success', response);
   } catch (error) {
     return generateResponse(res, 500, true, error.message);
   }
