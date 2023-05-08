@@ -72,11 +72,6 @@ export const addPostService = async (req) => {
       throw new Error('Invalid fields');
     }
 
-    const post = await Post.findOne({ serialNumber });
-    if (post) {
-      throw new Error('Post Exist');
-    }
-
     const { IpfsHash: imageIpfsHash } = await uploadImageToIpfs(
       fs.createReadStream(req.file.path),
       `${req.file.filename}${req.file.originalname.substring(
@@ -101,6 +96,31 @@ export const addPostService = async (req) => {
       user.secret,
       currentStellarTransactionKey
     );
+
+    const post = await Post.findOne({ serialNumber });
+    if (post) {
+      const latestTransaction = await getLatestTransactionForPost(post._id);
+
+      post.image = image;
+      post.condition = condition;
+      post.category = category;
+      post.postTitle = postTitle;
+      post.serialNumber = serialNumber;
+      post.price = price;
+      post.value = value;
+      post.userId = userId;
+      post.traded = false;
+      post.transactionHistory.push({
+        stellarUserPublicKey: user.publicKey,
+        previousStellarTransactionId: latestTransaction.stellarTransactionId,
+        stellarTransactionId: transaction.hash,
+        ipfsHash: IpfsHash,
+        timestamp,
+        transactionType: 'addPost',
+      });
+
+      return await post.save();
+    }
 
     return await PostSchema.create({
       image,
