@@ -180,8 +180,8 @@ export const ipfsDetailsPostService = async (req) => {
         return response.data;
       })
       .catch((e) => {
-        console.log('Axios IPFS details fetch failed');
-        throw new Error(e);
+        console.log('Axios IPFS details fetch failed', e.response.statusText);
+        throw new Error(e.response.statusText);
       });
   } catch (error) {
     throw new Error('IPFS details fetch failed');
