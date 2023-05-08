@@ -2,6 +2,7 @@ import { Router } from 'express';
 import {
   addPostController,
   getAllPostsController,
+  purchasePostController,
 } from '../controller/post.controller.js';
 import multer from 'multer';
 
@@ -11,12 +12,10 @@ const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, 'uploads');
   },
-  filename: (req, file, cb) => {
-    cb(null, file.fieldname + '-' + Date.now());
-  },
 });
 
 const upload = multer({ storage: storage });
 
 postRouter.post('/add', upload.single('image'), addPostController);
 postRouter.get('/all', getAllPostsController);
+postRouter.post('/purchase', purchasePostController);
