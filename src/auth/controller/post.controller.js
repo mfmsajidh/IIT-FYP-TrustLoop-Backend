@@ -5,6 +5,7 @@ import {
   getAllPostsService,
   purchasePostService,
   stellarHashPostService,
+  ipfsDetailsPostService,
 } from '../services/post.service.js';
 
 export const addPostController = async (req, res) => {
@@ -44,6 +45,15 @@ export const stellarHashPostController = async (req, res) => {
       'Stellar hash post fetch success',
       response
     );
+  } catch (error) {
+    return generateResponse(res, 500, true, error.message);
+  }
+};
+
+export const ipfsDetailsPostController = async (req, res) => {
+  try {
+    const response = await ipfsDetailsPostService(req);
+    return generateResponse(res, 200, false, 'IPFS fetch success', response);
   } catch (error) {
     return generateResponse(res, 500, true, error.message);
   }

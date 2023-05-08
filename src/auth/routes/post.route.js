@@ -4,6 +4,7 @@ import {
   getAllPostsController,
   purchasePostController,
   stellarHashPostController,
+  ipfsDetailsPostController,
 } from '../controller/post.controller.js';
 import multer from 'multer';
 
@@ -21,3 +22,4 @@ postRouter.post('/add', upload.single('image'), addPostController);
 postRouter.get('/all', getAllPostsController);
 postRouter.post('/purchase', purchasePostController);
 postRouter.post('/stellarHash', stellarHashPostController);
+postRouter.post('/ipfsDetails', ipfsDetailsPostController);
