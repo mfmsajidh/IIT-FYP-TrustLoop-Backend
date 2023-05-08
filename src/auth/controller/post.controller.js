@@ -4,6 +4,7 @@ import {
   addPostService,
   getAllPostsService,
   purchasePostService,
+  stellarHashPostService,
 } from '../services/post.service.js';
 
 export const addPostController = async (req, res) => {
@@ -28,6 +29,21 @@ export const purchasePostController = async (req, res) => {
   try {
     const response = await purchasePostService(req);
     return generateResponse(res, 200, false, 'Purchase post success', response);
+  } catch (error) {
+    return generateResponse(res, 500, true, error.message);
+  }
+};
+
+export const stellarHashPostController = async (req, res) => {
+  try {
+    const response = await stellarHashPostService(req);
+    return generateResponse(
+      res,
+      200,
+      false,
+      'Stellar hash post fetch success',
+      response
+    );
   } catch (error) {
     return generateResponse(res, 500, true, error.message);
   }

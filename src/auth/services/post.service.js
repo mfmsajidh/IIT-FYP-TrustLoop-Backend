@@ -10,7 +10,10 @@ import {
   uploadImageToIpfs,
   uploadMetadataToIpfs,
 } from '../../utility/pinata.util.js';
-import { storeHashOnStellar } from '../../utility/stellar.util.js';
+import {
+  getManageDataOperationFromTransactionHash,
+  storeHashOnStellar,
+} from '../../utility/stellar.util.js';
 import mongoose from 'mongoose';
 import axios from 'axios';
 
@@ -151,6 +154,15 @@ export const getAllPostsService = async () => {
     return await Post.find({ traded: false });
   } catch (error) {
     throw new Error('Get all posts failed');
+  }
+};
+
+export const stellarHashPostService = async (req) => {
+  try {
+    const { transactionHash } = req.body;
+    return await getManageDataOperationFromTransactionHash(transactionHash);
+  } catch (error) {
+    throw new Error('Stellar hash post fetch failed');
   }
 };
 

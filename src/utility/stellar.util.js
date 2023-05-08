@@ -68,3 +68,42 @@ export const fetchHashHistory = async (publicKey) => {
       return { key, ipfsHash };
     });
 };
+
+export const getManageDataOperationFromTransactionHash = async (
+  transactionHash
+) => {
+  try {
+    const transaction = await server
+      .transactions()
+      .transaction(transactionHash)
+      .call();
+
+    if (!transaction) {
+      console.log('Transaction not found');
+      return;
+    }
+
+    const operations = await server
+      .operations()
+      .forTransaction(transactionHash)
+      .call();
+
+    if (!operations || !operations.records) {
+      console.log('No operations found');
+      return;
+    }
+
+    const manageDataOperation = operations.records.find(
+      (operation) => operation.type === 'manage_data'
+    );
+
+    if (!manageDataOperation) {
+      console.log('No manage_data operation found in the transaction');
+      return;
+    }
+
+    return Buffer.from(manageDataOperation.value, 'base64').toString('utf8');
+  } catch (error) {
+    console.log('Error fetching transaction or operation:', error);
+  }
+};

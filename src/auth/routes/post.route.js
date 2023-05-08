@@ -3,6 +3,7 @@ import {
   addPostController,
   getAllPostsController,
   purchasePostController,
+  stellarHashPostController,
 } from '../controller/post.controller.js';
 import multer from 'multer';
 
@@ -19,3 +20,4 @@ const upload = multer({ storage: storage });
 postRouter.post('/add', upload.single('image'), addPostController);
 postRouter.get('/all', getAllPostsController);
 postRouter.post('/purchase', purchasePostController);
+postRouter.post('/stellarHash', stellarHashPostController);
